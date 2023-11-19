@@ -12,13 +12,12 @@ Operations:
 
 ## Approach
 - A FIFO stack data structure is used to store nested transactions.
-- On the top of the stack we always have an active (current) transaction.
-- Transaction stack implementation is backed by a slice. Alternatively, a linked list could be used.
-- Changes (set and delete operations) made in the context of an active transaction are stored in a data storage associated with a transaction. 
-- Data storage associated with a transaction is map where value is a string pointer rather than a string. A pointer type allows to use a nil to depict a deleted key.
-- On transaction commit all changes made in the context of an active transaction are propagated to the previous one. And then the transaction is popped out from the stack.
-- On transaction rollback no changes are propagated, an active transaction is just popped out from the stack.
-
+- The top of the stack always holds the active (current) transaction.
+- The implementation of the transaction stack is backed by a slice. Alternatively, a linked list could be used.
+- Changes (set and delete operations) made within the context of an active transaction are stored in a data storage associated with that transaction.
+- The data storage associated with a transaction is a map where the value is a string pointer rather than a string itself. A pointer type allows us to use a nil value to represent a deleted key.
+- Upon transaction commit, all changes made within the context of the active transaction are propagated to the previous transaction in the stack. Then, the committed transaction is popped from the stack.
+- Upon transaction rollback, no changes are propagated, the active transaction is simply popped from the stack.
 
 ## Requirements:
 
