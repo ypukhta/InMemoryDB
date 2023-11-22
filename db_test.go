@@ -88,7 +88,7 @@ func TestNestedTransactionsWithRollback(t *testing.T) {
 	assert.Equal(t, "value2", val)
 }
 
-func TestGetCanReturnValueForUncommittedTTransaction(t *testing.T) {
+func TestGetCanReturnValueForUncommittedTransaction(t *testing.T) {
 	db := NewDB()
 
 	db.Set("key1", "value1")
