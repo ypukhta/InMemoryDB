@@ -87,3 +87,22 @@ func TestNestedTransactionsWithRollback(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "value2", val)
 }
+
+func TestGetCanReturnValueForUncommittedTTransaction(t *testing.T) {
+	db := NewDB()
+
+	db.Set("key1", "value1")
+
+	// Case 1 - Get value after set for an uncommitted transaction
+	db.StartTransaction()
+	db.Set("key1", "value2")
+	val, err := db.Get("key1")
+	assert.NoError(t, err)
+	assert.Equal(t, "value2", val)
+
+	// Case 2 - Get value after delete for an uncommitted transaction
+	db.StartTransaction()
+	db.Delete("key1")
+	val, err = db.Get("key1")
+	assert.Error(t, err)
+}
